@@ -1,12 +1,11 @@
 <template>
-    <v-flex class="ml-3">
-        11111
-    </v-flex>
+    <v-card>
+        <v-card-title>没有检测到Agent</v-card-title>
+    </v-card>
 </template>
 
 <script>
   export default {
-
   }
 </script>
 

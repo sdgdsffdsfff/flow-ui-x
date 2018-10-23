@@ -11,10 +11,18 @@
         <i class="flow-icon flow-icon-logo"/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <i class="material-icons">dvr</i>
-      </v-btn>
-      <v-menu offset-y>
+      <v-menu
+        :close-on-content-click="false"
+        :nudge-width="200"
+        offset-y
+        :nudge-bottom="14"
+      >
+        <v-btn icon slot="activator">
+          <i class="material-icons">dvr</i>
+        </v-btn>
+        <AgentMessage></AgentMessage>
+      </v-menu>
+      <v-menu offset-y :nudge-bottom="14">
         <v-btn
           slot="activator"
           icon
@@ -87,11 +95,13 @@
   import SockJS from 'sockjs-client'
   import Stomp from 'stompjs'
   import Actions from '@/api/store/actions'
+  import AgentMessage from '@/components/Agent/AgentMessage'
   export default {
     name: 'App',
     components: {
       CreateFlow,
-      FlowList
+      FlowList,
+      AgentMessage
     },
     data () {
       return {

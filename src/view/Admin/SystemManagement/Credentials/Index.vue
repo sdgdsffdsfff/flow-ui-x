@@ -1,54 +1,13 @@
 <template>
-    <v-card class="ml-3" width="100%">
-        <v-card-title class="blue lighten-4">
-          <h4>RSA证书</h4>
-          <v-spacer/>
-          <v-dialog
-            v-model="dialog"
-            width="500"
-          >
-            <v-btn
-              slot="activator"
-              color="green lighten-2"
-              dark
-            >
-              添加 Credential
-            </v-btn>
-
-            <v-card>
-              <v-card-title
-                class="headline grey lighten-2"
-                primary-title
-              >
-                名称
-              </v-card-title>
-
-              <v-card-text>
-                <name-input init-value="" v-on:input="onNameInput"/>
-              </v-card-text>
-
-              <v-divider></v-divider>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="primary"
-                  flat
-                  @click="credentialsCreate()"
-                >
-                  生成
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-card-title>
-        <div class="text-xs-center mt-5" v-if="!credentials.data">
-          <v-progress-circular
-          indeterminate
-          color="purple"
-          ></v-progress-circular>
-        </div>
-        <v-data-table
+  <AdminTemplate :title='title' :btnText="btnText" @create="credentialsCreate">
+    <div slot="content">
+      <div class="text-xs-center mt-5" v-if="!credentials.data">
+        <v-progress-circular
+        indeterminate
+        color="purple"
+        ></v-progress-circular>
+      </div>
+      <v-data-table
           :headers="headers"
           :items="credentials.data"
           hide-actions
@@ -66,14 +25,6 @@
                 </v-list-tile-title>
               </v-list-tile-content>
               <v-btn color="info"  small @click="look(props.item.publicKey, props.item.privateKey)">查看</v-btn>
-            </td>
-            <td class="text-xs-left">
-                <v-icon
-                    small
-                    @click="deleteItem(props.item)"
-                >
-                    delete
-                </v-icon>
             </td>
           </template>
         </v-data-table>
@@ -95,23 +46,24 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-    </v-card>
+    </div>
+  </AdminTemplate>
 </template>
 
 <script>
-  import NameInput from '@/components/CreateFlow/NameInput'
   import { createCredentials, getCredentials } from '@/api/axios/api'
+  import AdminTemplate from '@/components/Admin/SystemManagement/AdminTemplate'
   export default {
     data () {
       return {
-        dialog: false,
         lookKey: false,
+        title: 'RSA证书',
+        btnText: '添加 Credential',
         key: {
           publicKey: '',
           privateKey: ''
         },
         credentials: {
-          name: '',
           data: []
         },
         headers: [
@@ -122,8 +74,7 @@
           },
           { text: '创建人', sortable: false },
           { text: '创建时间', sortable: false },
-          { text: 'Fingerprint', sortable: false },
-          { text: '', sortable: false }
+          { text: 'Fingerprint', sortable: false }
         ]
       }
     },
@@ -131,13 +82,8 @@
       this.credentialsGet()
     },
     methods: {
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-      },
-      credentialsCreate () {
-        createCredentials(this.credentials.name).then(res => {
-          this.dialog = false
+      credentialsCreate (name) {
+        createCredentials(name).then(res => {
           if (res.data) {
             this.credentialsGet()
           }
@@ -150,9 +96,6 @@
           this.credentials.data = res.data
         })
       },
-      onNameInput (name, errors) {
-        this.credentials.name = name
-      },
       look (publicKey, privateKey) {
         this.key.publicKey = publicKey
         this.key.privateKey = privateKey
@@ -160,7 +103,7 @@
       }
     },
     components: {
-      NameInput
+      AdminTemplate
     }
   }
 </script>

@@ -7,7 +7,7 @@ import JobDetail from '@/view/JobDetail/Index'
 import PersonalSetting from '@/view/Admin/PersonalSetting/Index'
 import SystemManagement from '@/view/Admin/SystemManagement/Index'
 import Credentials from '@/view/Admin/SystemManagement/Credentials/Index'
-import Flow from '@/view/Admin/SystemManagement/Flow/Index'
+import Agent from '@/view/Admin/SystemManagement/Agent/Index'
 
 Vue.use(Router)
 
@@ -42,14 +42,15 @@ export default new Router({
       path: '/admin/systemmanagement',
       name: 'SystemManagement',
       component: SystemManagement,
+      redirect: '/admin/systemmanagement/credentials',
       children: [
         {
           path: 'credentials',
           component: Credentials
         },
         {
-          path: 'flow',
-          component: Flow
+          path: 'agent',
+          component: Agent
         }
       ]
     }

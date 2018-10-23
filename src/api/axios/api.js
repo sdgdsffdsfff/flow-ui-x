@@ -83,7 +83,10 @@ export function createCredentials (name) {
     url: `${api.credentials}/rsa`,
     method: 'post',
     data: {
-      name: name
+      'name': name
+    },
+    headers: {
+      'Content-Type': 'application/json'
     }
   })
 }
