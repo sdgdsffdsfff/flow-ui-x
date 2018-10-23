@@ -8,44 +8,44 @@
         ></v-progress-circular>
       </div>
       <v-data-table
-          :headers="headers"
-          :items="credentials.data"
-          hide-actions
-          class="elevation-1"
-        >
-          <template slot="items" slot-scope="props">
-            <td>{{ props.item.name }}</td>
-            <td class="text-xs-left">--</td>
-            <td class="text-xs-left">{{ props.item.createdAt | datefmt('YYYY-MM-DD HH:mm:ss') }}</td>
-            <td class="text-xs-left text--primary key">
-              <v-list-tile-content style="width:50px">
-                <v-list-tile-title>
-                  {{props.item.publicKey}}
-                  {{props.item.privateKey}}
-                </v-list-tile-title>
-              </v-list-tile-content>
-              <v-btn color="info"  small @click="look(props.item.publicKey, props.item.privateKey)">查看</v-btn>
-            </td>
-          </template>
-        </v-data-table>
-        <v-dialog v-model="lookKey" width="600px">
-          <v-card>
-            <v-card-title>
-              <span class="headline">公钥/私钥</span>
-            </v-card-title>
-            <v-card-text>
-              <h3>公钥</h3>
-              <p class="a">{{key.publicKey}}</p>
-              <br>
-              <h3>私钥</h3>
-              <p class="a">{{key.privateKey}}</p>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="green darken-1" flat="flat" @click="lookKey = false">关闭</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        :headers="headers"
+        :items="credentials.data"
+        hide-actions
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="props">
+          <td>{{ props.item.name }}</td>
+          <td class="text-xs-left">--</td>
+          <td class="text-xs-left">{{ props.item.createdAt | datefmt('YYYY-MM-DD HH:mm:ss') }}</td>
+          <td class="text-xs-left text--primary key">
+            <v-list-tile-content style="width:50px">
+              <v-list-tile-title>
+                {{props.item.publicKey}}
+                {{props.item.privateKey}}
+              </v-list-tile-title>
+            </v-list-tile-content>
+            <v-btn color="info"  small @click="look(props.item.publicKey, props.item.privateKey)">查看</v-btn>
+          </td>
+        </template>
+      </v-data-table>
+      <v-dialog v-model="lookKey" width="600px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">公钥/私钥</span>
+          </v-card-title>
+          <v-card-text>
+            <h3>公钥</h3>
+            <p class="a">{{key.publicKey}}</p>
+            <br>
+            <h3>私钥</h3>
+            <p class="a">{{key.privateKey}}</p>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" flat="flat" @click="lookKey = false">关闭</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </AdminTemplate>
 </template>

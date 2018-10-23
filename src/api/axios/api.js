@@ -97,3 +97,27 @@ export function getCredentials () {
     method: 'get'
   })
 }
+
+export function getAgents () {
+  return fetch({
+    url: `${api.agents}`,
+    method: 'get'
+  })
+}
+
+export function getAgent (token) {
+  return fetch({
+    url: `${api.agents}/token`,
+    method: 'get'
+  })
+}
+
+export function createAgent (name) {
+  return fetch({
+    url: `${api.agents}`,
+    method: 'post',
+    data: {
+      'name': name
+    }
+  })
+}

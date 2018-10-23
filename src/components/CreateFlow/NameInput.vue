@@ -6,6 +6,8 @@
         v-model="textVal"
         single-line
         hint="Give a name for flow"
+        label="Name"
+        required
       ></v-text-field>
     </v-flex>
   </v-layout>
