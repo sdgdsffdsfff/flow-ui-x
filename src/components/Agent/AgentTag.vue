@@ -3,7 +3,7 @@
         <v-combobox
             v-model="select"
             :items="items"
-            label="I use a scoped slot"
+            label="tag"
             multiple
             chips
         >
