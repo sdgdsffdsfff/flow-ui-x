@@ -16,6 +16,7 @@
         :nudge-width="200"
         offset-y
         :nudge-bottom="14"
+        lazy
       >
         <v-btn icon slot="activator">
           <i class="material-icons">dvr</i>

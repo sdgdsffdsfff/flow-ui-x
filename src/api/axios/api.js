@@ -112,12 +112,13 @@ export function getAgent (token) {
   })
 }
 
-export function createAgent (name) {
+export function createAgent (name, tags) {
   return fetch({
     url: `${api.agents}`,
     method: 'post',
     data: {
-      'name': name
+      'name': name,
+      'tags': tags
     }
   })
 }

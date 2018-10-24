@@ -1,5 +1,5 @@
 <template>
-  <AdminTemplate :title='title' :btnText="btnText" @create="credentialsCreate">
+  <AdminTemplate :title='title' :tagTrigger=false :btnText="btnText" @create="credentialsCreate">
     <div slot="content">
       <div class="text-xs-center mt-5" v-if="!credentials.data">
         <v-progress-circular

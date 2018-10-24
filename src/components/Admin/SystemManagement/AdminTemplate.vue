@@ -25,7 +25,8 @@
                     </v-card-title>
 
                     <v-card-text>
-                    <name-input init-value="" v-on:input="onNameInput"/>
+                      <name-input init-value="" v-on:input="onNameInput"/>
+                      <AgentTag v-if="tagTrigger" @agentTag="agentTag"></AgentTag>
                     </v-card-text>
 
                     <v-divider></v-divider>
@@ -49,11 +50,13 @@
 
 <script>
   import NameInput from '@/components/CreateFlow/NameInput'
+  import AgentTag from '@/components/Agent/AgentTag'
   export default {
     data () {
       return {
         dialog: false,
-        name: ''
+        name: '',
+        tags: []
       }
     },
     props: {
@@ -64,19 +67,27 @@
       btnText: {
         type: String,
         default: ''
+      },
+      tagTrigger: {
+        type: Boolean,
+        default: false
       }
     },
     methods: {
       create () {
         this.dialog = false
-        this.$emit('create', this.name)
+        this.tags ? this.$emit('create', this.name, this.tags) : this.$emit('create', this.name)
       },
       onNameInput (name, errors) {
         this.name = name
+      },
+      agentTag (tags) {
+        this.tags = tags
       }
     },
     components: {
-      NameInput
+      NameInput,
+      AgentTag
     }
   }
 </script>

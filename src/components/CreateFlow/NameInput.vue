@@ -1,6 +1,6 @@
 <template>
   <v-layout row>
-    <v-flex xs8>
+    <!-- <v-flex xs8> -->
       <v-text-field
         :rules="[nameRules.required, nameRules.counter, nameRules.format]"
         v-model="textVal"
@@ -9,7 +9,7 @@
         label="Name"
         required
       ></v-text-field>
-    </v-flex>
+    <!-- </v-flex> -->
   </v-layout>
 </template>
 

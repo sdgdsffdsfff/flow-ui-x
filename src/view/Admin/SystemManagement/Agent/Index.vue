@@ -1,5 +1,5 @@
 <template>
-  <AdminTemplate :title="title" :btnText="btnText" @create="agentCreate">
+  <AdminTemplate :title="title" :tagTrigger=true :btnText="btnText" @create="agentCreate">
     <div slot="content">
       <div class="text-xs-center mt-5" v-if="false">
         <v-progress-circular
@@ -51,8 +51,9 @@
       this.agentsGet()
     },
     methods: {
-      agentCreate (name) {
-        createAgent(name).then(res => {
+      agentCreate (name, tags) {
+        createAgent(name, tags).then(res => {
+          console.log(res)
           if (res.data) {
             this.agentsGet()
           }

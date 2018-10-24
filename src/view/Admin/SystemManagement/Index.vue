@@ -10,7 +10,9 @@
                 <span class="ml-3">Agent</span>
             </v-btn>
         </v-btn-toggle>
+        <!-- <v-scroll-y-transition mode="out-in"> -->
         <router-view></router-view>
+        <!-- </v-scroll-y-transition> -->
     </v-layout>
 </template>
 
