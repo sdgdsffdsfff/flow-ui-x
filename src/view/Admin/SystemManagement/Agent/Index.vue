@@ -1,17 +1,12 @@
 <template>
   <AdminTemplate :title="title" :tagTrigger=true :btnText="btnText" @create="agentCreate">
     <div slot="content">
-      <div class="text-xs-center mt-5" v-if="!agents">
-        <v-progress-circular
-        indeterminate
-        color="purple"
-        ></v-progress-circular>
-      </div>
       <v-data-table
         :headers="headers"
         :items="agents"
         hide-actions
         class="elevation-1"
+        :loading="loading"
       >
         <template slot="items" slot-scope="props">
           <td>{{props.item.status}}</td>
@@ -44,7 +39,8 @@
           { text: 'token', sortable: false },
           { text: '操作', sortable: false }
         ],
-        agents: []
+        agents: [],
+        loading: true
       }
     },
     created () {
@@ -58,6 +54,7 @@
       },
       agentsGet () {
         getAgents().then(res => {
+          res.data.data ? this.loading = false : this.loading = true
           this.agents = res.data.data
         })
       }

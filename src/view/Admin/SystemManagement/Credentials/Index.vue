@@ -1,17 +1,12 @@
 <template>
   <AdminTemplate :title='title' :tagTrigger=false :btnText="btnText" @create="credentialsCreate">
     <div slot="content">
-      <div class="text-xs-center mt-5" v-if="!credentials.data">
-        <v-progress-circular
-        indeterminate
-        color="purple"
-        ></v-progress-circular>
-      </div>
       <v-data-table
         :headers="headers"
         :items="credentials.data"
         hide-actions
         class="elevation-1"
+        :loading="loading"
       >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.name }}</td>
@@ -75,7 +70,8 @@
           { text: '创建人', sortable: false },
           { text: '创建时间', sortable: false },
           { text: 'Fingerprint', sortable: false }
-        ]
+        ],
+        loading: true
       }
     },
     created () {
@@ -93,6 +89,7 @@
       },
       credentialsGet () {
         getCredentials().then(res => {
+          res.data ? this.loading = false : this.loading = true
           this.credentials.data = res.data
         })
       },

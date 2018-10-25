@@ -31,22 +31,18 @@
           </v-btn>
         </v-card-actions>
         <v-card-text>
-          <JobItem :jobs="jobs" :pages="pages" @pageChange="pageChange"></JobItem>
+          <JobItem></JobItem>
         </v-card-text>
     </v-card>
 </template>
 
 <script>
-  import { jobsList, jobRun } from '@/api/axios/api'
+  import { jobRun } from '@/api/axios/api'
   import JobItem from '@/components/Jobs/JobItem'
-  import { mapState } from 'vuex'
   export default {
     name: 'Jobs',
     data () {
       return {
-        jobs: [],
-        size: 10,
-        pages: 0,
         loading: false,
         alert: false
       }
@@ -72,51 +68,6 @@
         }).catch(err => {
           console.log(err)
         })
-      },
-      // 分页
-      pageChange (val) {
-        jobsList(this.$route.params.id, this.size, val - 1).then(res => {
-          this.jobs = res.data.data.content
-        }).catch(err => {
-          console.log(err)
-        })
-      }
-    },
-    // 页面初始化 jobs
-    created () {
-      jobsList(this.$route.params.id, this.size, 0).then(res => {
-        this.pages = res.data.data.totalPages
-        this.jobs = res.data.data.content
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    computed: {
-      ...mapState({
-        jobsStatus: state => state.jobs.JobsStatus
-      })
-    },
-    watch: {
-      //  每次监听到路由变换的时候 渲染不同的JOBS
-      $route (to, form) {
-        jobsList(this.$route.params.id, this.size, 0).then(res => {
-          this.pages = res.data.data.totalPages
-          this.jobs = res.data.data.content
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      //  推送状态监听
-      jobsStatus (val) {
-        if (val.event === 'NEW_CREATED') {
-          this.jobs.unshift(val.job)
-        } else if (val.event === 'STATUS_CHANGE') {
-          for (var i = 0; i < this.jobs.length; i++) {
-            if (this.jobs[i].buildNumber === val.job.buildNumber) {
-              this.$set(this.jobs, i, val.job)
-            }
-          }
-        }
       }
     },
     components: {

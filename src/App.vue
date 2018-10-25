@@ -16,6 +16,7 @@
         :nudge-width="200"
         offset-y
         :nudge-bottom="14"
+        :nudge-right="14"
         lazy
       >
         <v-btn icon slot="activator">
@@ -27,6 +28,7 @@
         <v-btn
           slot="activator"
           icon
+          lazy
         >
           <v-icon class="material-icons">account_circle</v-icon>
         </v-btn>

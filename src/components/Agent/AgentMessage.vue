@@ -7,6 +7,7 @@
             :items="agents"
             hide-actions
             class="elevation-1"
+            :loading="loading"
         >
             <template slot="items" slot-scope="props">
                 <td class="text-xs-left">{{props.item.name}}</td>
@@ -27,12 +28,14 @@
           { text: 'name', sortable: false },
           { text: 'Job', sortable: false },
           { text: 'Status', sortable: false }
-        ]
+        ],
+        loading: true
       }
     },
     created () {
       getAgents().then(res => {
         this.agents = res.data.data
+        this.agents ? this.loading = false : this.loading = true
       })
     }
   }
