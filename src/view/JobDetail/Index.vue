@@ -13,7 +13,7 @@
                 indeterminate
                 :size="20"
                 color="primary"
-                v-if="jobdetail.status === 'RUNNING' || jobdetail.status === 'ENQUEUE'"
+                v-if="jobdetail.status === 'RUNNING' || jobdetail.status === 'ENQUEUE' || jobdetail.status === 'QUEUED'"
               ></v-progress-circular>
               <v-icon v-if="jobdetail.status === 'TIMEOUT'">error_outline</v-icon>
               <v-icon v-if="jobdetail.status === 'SUCCESS'">check_circle</v-icon>
@@ -102,8 +102,8 @@
     },
     watch: {
       jobsStatus (val) {
-        if (this.jobdetail.buildNumber === val.job.buildNumber) {
-          this.jobdetail = val.job
+        if (this.jobdetail.buildNumber === val.body.buildNumber) {
+          this.jobdetail = val.body
         }
       }
     }

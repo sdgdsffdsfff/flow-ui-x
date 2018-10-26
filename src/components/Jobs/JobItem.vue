@@ -87,10 +87,10 @@
       //  推送状态监听
       jobsStatus (val) {
         if (val.event === 'NEW_CREATED') {
-          this.jobs.unshift(val.job)
+          this.jobs.unshift(val.body)
         } else if (val.event === 'STATUS_CHANGE') {
           this.jobs.find((data, i) => {
-            data.buildNumber === val.job.buildNumber && this.$set(this.jobs, i, val.job)
+            data.buildNumber === val.body.buildNumber && this.$set(this.jobs, i, val.body)
           })
         }
       }
