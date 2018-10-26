@@ -42,7 +42,7 @@
                       <Message :jobdetail="jobdetail"></Message>
                     </v-card-text>
                     <v-card-text v-if="n === '构建日志'">
-                      <Log></Log>
+                      <Log :jobId="jobdetail.id"></Log>
                     </v-card-text>
                     <v-card-text v-if="n === 'YML 配置'">
                       <pre>

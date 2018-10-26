@@ -9,13 +9,15 @@
             <v-expansion-panel-content
               v-for="(item,i) in Steps"
               :key="i"
-              @input="loadSpaces($event, item.id, item.totalPages, item.name, i)"
+              @input="loadSpaces($event, item, i)"
               :ref="item.name"
             >
               <!-- title -->
               <div class="step-title" slot="header">
                 <!-- status -->
-                <v-icon class="mr-2" v-if="item.status == 'TIMEOUT' || item.status == 'PENDING'">error_outline</v-icon>
+                <!-- {{item.status}} -->
+                <v-icon class="material-icons mr-2" v-if="item.status == 'TIMEOUT' || item.status == 'PENDING'">not_interested</v-icon>
+                <v-icon class="material-icons mr-2" v-if="item.status === 'RUNNING'">cached</v-icon>
                 <v-icon class="mr-2" color="green" v-if="item.status === 'SUCCESS'">check_circle</v-icon>
                 {{item.name}}
               </div>
@@ -65,6 +67,12 @@
   let Base64 = require('js-base64').Base64
   export default {
     name: 'Log',
+    props: {
+      jobId: {
+        type: String,
+        default: ''
+      }
+    },
     data () {
       return {
         pullup: true,
@@ -73,7 +81,8 @@
         loading: false,
         num: this.$route.params.num,
         name: this.$route.params.id,
-        code: 0
+        code: 0,
+        stepsStatus: []
       }
     },
     computed: {
@@ -82,6 +91,16 @@
       })
     },
     created () {
+      const path = '/topic/steps/' + this.jobId
+      var self = this
+      this.SocketClient.subscribe(path, function (data) { // 订阅服务端提供的某个topic
+        self.Steps.forEach((val, i) => { //  修改step的状态
+          if (val.id === JSON.parse(data.body).body.id) {
+            val.status = JSON.parse(data.body).body.status
+            val.totalPages = Math.ceil(JSON.parse(data.body).body.logSize / 20)
+          }
+        })
+      })
       // 进入页面时取到渲染列表名称
       jobSteps(this.name, this.num).then(res => {
         res.data.data.forEach(val => {
@@ -118,25 +137,28 @@
         }
       },
       // 打开列表加载数据
-      loadSpaces (state, id, totalPages, name, index) {
-        this.page = totalPages - 1
+      loadSpaces (state, item, index) {
+        this.page = item.totalPages - 1
         let self = this
-        if (state) {
-          // 在step 的推送的状态是 PENDING RUNNING的时候 渲染LOG推送的日志
-          const path = '/topic/logs/' + id
-          this.SocketClient.subscribe(path, function (data) { // 订阅服务端提供的某个topic
-            if (self.Steps[index].content.indexOf(data.body) === -1) { // data.body存放的是服务端发送给我们的信息
-              self.Steps[index].content.push(data.body)
-              self.Steps[index].content.length > 20 && self.Steps[index].content.shift()
-            }
-          })
-          // 在step 的的推送的状态是 SUCCESS的时候 渲染LOG接口的日志
-          stepsLog(this.name, this.num, id, totalPages - 1).then(res => {
-            this.code = res.data.code
-            this.Steps[index].content = res.data.data.content
-          }).catch(err => {
-            return err
-          })
+        if (state === true) {
+          if (item.status === 'SUCCESS') {
+            // 在step 的的推送的状态是 SUCCESS的时候 渲染LOG接口的日志
+            stepsLog(this.name, this.num, item.id, item.totalPages - 1).then(res => {
+              this.code = res.data.code
+              this.Steps[index].content = res.data.data.content
+            }).catch(err => {
+              return err
+            })
+          } else {
+            // 在step 的推送的状态是 PENDING RUNNING的时候 渲染LOG推送的日志
+            const path = '/topic/logs/' + item.id
+            this.SocketClient.subscribe(path, function (data) { // 订阅服务端提供的某个topic
+              if (self.Steps[index].content.indexOf(data.body) === -1) { // data.body存放的是服务端发送给我们的信息
+                self.Steps[index].content.push(data.body)
+                self.Steps[index].content.length > 20 && self.Steps[index].content.shift()
+              }
+            })
+          }
         }
       }
     },
